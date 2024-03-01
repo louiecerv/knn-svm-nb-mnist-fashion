@@ -54,35 +54,31 @@ def display_form1():
     form1.header('Description')
     form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
     form1.subheader('The Iris Dataset')
-    text = """Supervised learning algorithm: Used for both classification and regression.
-        Linear decision boundary: In high-dimensional spaces, it uses the 
-        kernel trick to create a non-linear decision boundary by implicitly 
-        mapping data points to higher dimensions.
-        Maximizing margin: Aims to find the hyperplane that separates classes 
-        with the largest margin (distance between the hyperplane and the closest data 
-        points on either side). This makes it robust to noise and outliers.
-    """
-    form1.write(text)
-    form1.subheader('Linear Kernel')
 
-    text = """Formula: K(x_i, x_j) = x_i^T * x_j (essentially the dot product)
-        \nWhen to use: Best suited for linearly separable data. Also a 
-        good starting point when you're unsure which kernel to choose, 
-        as it's generally fast and simple."""
+    text = """The Iris dataset is a well-known and widely used dataset in the field
+    of machine learning. Here's a breakdown of its key aspects:"""
     form1.write(text)
-    form1.subheader('Polynomial Kernel')
-    text = """Formula: K(x_i, x_j) = (x_i^T * x_j + 1)^d (where 'd' is the degree of the polynomial)
-        \nWhen to use: Useful for problems where the relationship between the data points
-        is not simply linear. The degree 'd' controls how flexible the decision boundary can be. """
+    text = """Data points: 150, representing 50 samples from each of three Iris species: 
+    Iris setosa, Iris versicolor, and Iris virginica.
+    \nFeatures: Four measurements for each flower (in centimeters):
+    \nSepal length
+    \nSepal width
+    \nPetal length
+    \nPetal width
+    \nTarget variable: The species of the Iris flower (Setosa, Versicolor, or Virginica)."""
     form1.write(text)
-
-    form1.subheader('Radial Basis Function (RBF) Kernel')
-
-    text = """Formula: K(x_i, x_j) = exp(-gamma ||x_i - x_j||^2) (where 'gamma' is 
-        a parameter that influences the spread of the kernel)
-        \nWhen to use: The RBF kernel is a popular choice as it can 
-        handle complex, non-linear decision boundaries. The 'gamma' parameter 
-        allows you to control the influence of nearby data points on the decision boundary."""
+    form1.write('Applications:')
+    text = """Commonly used to introduce and test various machine learning algorithms, 
+    especially for: Classification (predicting the flower species based on the
+    measurements) Visualization (exploring relationships between features and species)"""
+    form1.write(text)
+    form1.write('Interesting characteristics:')
+    text = """One species (Setosa) is easily distinguishable from the others 
+    based on its sepal measurements. The other two species (Versicolor and Virginica) 
+    have some overlap in their measurements, making them more challenging to 
+    distinguish solely based on two features. Overall, the Iris dataset, despite its 
+    simplicity, offers a valuable resource for understanding and practicing 
+    fundamental machine learning concepts."""
     form1.write(text)
 
     submit1 = form1.form_submit_button("Start")
