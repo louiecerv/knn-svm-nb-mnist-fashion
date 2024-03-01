@@ -52,7 +52,8 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
-    form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
+    #form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
+    form1.image('iris_flower.jpg', caption="Iris Plant")
     form1.subheader('The Iris Dataset')
 
     text = """The Iris dataset is a well-known and widely used dataset in the field
