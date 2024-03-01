@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from sklearn.svm import SVC
+from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
@@ -90,12 +91,23 @@ def display_form2():
     st.session_state["current_form"] = 2
 
     form2 = st.form("training")
-    #this session variable provides access to form2
-    st.session_state["form2"] = form2
+    # Load the iris dataset
+    data = load_iris()
+
+    # Convert data features to a DataFrame
+    feature_names = data.feature_names
+    df = pd.DataFrame(data.data, columns=feature_names)
+    df['target'] = data.target
     
-    df = pd.read_csv('data_decision_trees.csv', header=None)
-    X = df.iloc[:,:-1].values
-    y = df.iloc[:,-1].values   
+    form2.write('The iris dataset')
+    form2.write(df)
+
+    # Separate features and target variable
+    X = df.drop('target', axis=1)  # Target variable column name
+    y = df['target']
+
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     text = """Imagine a triangle formed by the three centroids of class 0. 
     Class 1 data points will be scattered around the center of the triangle, 
