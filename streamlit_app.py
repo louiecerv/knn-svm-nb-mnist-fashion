@@ -13,7 +13,7 @@ def app():
     if "reset_app" not in st.session_state:
         st.session_state.reset_app = False
 
-    st.title('Comparison of SVM Kernels')
+    st.title('ML Classifiers on the Iris Dataset')
 
     # Use session state to track the current form
     if "current_form" not in st.session_state:
@@ -27,8 +27,6 @@ def app():
     elif st.session_state["current_form"] == 3:
         display_form3()
 
-    if "form2" not in st.session_state: 
-        st.session_state["form2"] = []
 
     if "clf" not in st.session_state: 
         st.session_state["clf"] = []
@@ -54,7 +52,8 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
-    form1.subheader('Support Vector Machines (SVM):')
+    form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
+    form1.subheader('The Iris Dataset')
     text = """Supervised learning algorithm: Used for both classification and regression.
         Linear decision boundary: In high-dimensional spaces, it uses the 
         kernel trick to create a non-linear decision boundary by implicitly 
