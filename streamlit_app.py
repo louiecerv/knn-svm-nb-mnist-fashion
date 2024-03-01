@@ -52,8 +52,20 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
+    # Add CSS styling
+    style = """
+    <style>
+    .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    }
+    </style>
+    """
+    form1.markdown(style, unsafe_allow_html=True)
     #form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
-    form1.image('iris_flower.jpg', caption="Iris Plant")
+    form1.image('iris_flower.jpg', caption="Iris Plant", class_="center")
     form1.subheader('The Iris Dataset')
 
     text = """The Iris dataset is a well-known and widely used dataset in the field
