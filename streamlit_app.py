@@ -63,7 +63,7 @@ def display_form1():
     }
     </style>
     """
-    form1.markdown(style, unsafe_allow_html=True)
+    st.markdown(style, unsafe_allow_html=True)
     #form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
     form1.image('iris_flower.jpg', caption="Iris Plant", class_="center")
     form1.subheader('The Iris Dataset')
