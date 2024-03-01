@@ -61,10 +61,10 @@ def display_form1():
     text = """Data points: 150, representing 50 samples from each of three Iris species: 
     Iris setosa, Iris versicolor, and Iris virginica.
     \nFeatures: Four measurements for each flower (in centimeters):
-    \nSepal length
-    \nSepal width
-    \nPetal length
-    \nPetal width
+    Sepal length
+    Sepal width
+    Petal length
+    Petal width
     \nTarget variable: The species of the Iris flower (Setosa, Versicolor, or Virginica)."""
     form1.write(text)
     form1.write('Applications:')
