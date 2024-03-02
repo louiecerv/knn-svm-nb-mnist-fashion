@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import LogisticRegression
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -28,18 +30,24 @@ def app():
     elif st.session_state["current_form"] == 3:
         display_form3()
 
-
     if "clf" not in st.session_state: 
         st.session_state["clf"] = []
 
+    if "X_train" not in st.session_state: 
+        st.session_state["X_train"] = []
+
     if "X_test" not in st.session_state: 
-        st.session_state["X_Test"] = []
+        st.session_state["X_test"] = []
     
-    if "y_test_pred" not in st.session_state: 
-        st.session_state["y_test_pred"] = []
+    if "y_train" not in st.session_state: 
+        st.session_state["X_train"] = []
+    
+    if "y_test" not in st.session_state: 
+        st.session_state["y_yest"] = []
+    X_train, X_test, y_train, y_test
 
     if "selected_kernel" not in st.session_state: 
-        st.session_state["selected_kernel"] = []
+        st.session_state["selected_model"] = 0
 
 def display_form1():
     st.session_state["current_form"] = 1
@@ -101,6 +109,12 @@ def display_form2():
 
     # Split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    #save the values to the session state
+    st.session_state['X_train'] = X_train
+    st.session_state['X_test'] = X_test
+    st.session_state['y_train'] = y_train
+    st.session_state['y_test'] = y_test
 
     form2.write('Interesting characteristics:')
     text = """One species (Setosa) is easily distinguishable from the others 
@@ -173,128 +187,82 @@ def display_form2():
     their petal measurements"""
     form2.write(text)
 
-    form2.subheader('Select the kernel')
+    form2.subheader('Select the classifier')
 
     # Create the selecton of classifier
-    clf = SVC(kernel='linear')
-    st.session_state['selected_kernel'] = 0
-    options = ['Linear', 'Polynomial', 'Radial Basis Function']
-    selected_option = form2.selectbox('Select the kernel', options)
-    if selected_option =='Polynomial':
-        st.session_state['selected_kernel'] = 1
-        clf = SVC(kernel='poly', degree=3)
-    elif selected_option=='Radial Basis Function':
-        st.session_state['selected_kernel'] = 2
-        clf = SVC(kernel='rbf', gamma=10) 
-    else:
-        clf = SVC(kernel='linear')
+
+    clf = GaussianNB() 
+    options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
+    selected_option = st.selectbox('Select the classifier', options)
+    if selected_option =='Logistic Regression':
+        clf = LogisticRegression(C=1.0, class_weight=None, 
+            dual=False, fit_intercept=True,
+            intercept_scaling=1, max_iter=100, multi_class='auto',
+            n_jobs=1, penalty='l2', random_state=42, solver='lbfgs',
+            tol=0.0001, verbose=0, warm_start=False)
         st.session_state['selected_kernel'] = 0
+    elif selected_option=='Support Vector Machine':
+        clf = SVC(kernel='rbf', gamma=10) 
+        st.session_state['selected_kernel'] = 2
+    else:
+        clf = GaussianNB()
+        st.session_state['selected_kernel'] = 1
 
     # save the clf to the session variable
     st.session_state['clf'] = clf
 
     submit2 = form2.form_submit_button("Train")
     if submit2:     
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=3)
-
-        clf = st.session_state['clf']
-        clf.fit(X_train, y_train)
-        y_test_pred = clf.predict(X_test)
-
-        form2.subheader('Confusion Matrix')
-        form2.write('Confusion Matrix')
-        cm = confusion_matrix(y_test, y_test_pred)
-        form2.text(cm)
-        form2.subheader('Performance Metrics')
-        form2.text(classification_report(y_test, y_test_pred))
-
-        # save the clf to the session state
-        st.session_state['clf'] = clf
         display_form3()
-
-        # save data to session state
-        st.session_state['X_test'] = X_test
-        st.session_state['y_test_pred'] = y_test_pred
 
 def display_form3():
     st.session_state["current_form"] = 3
-    form3 = st.form("Visualization")
-    form3.subheader('Visualization')
-    form3.text('Click the button to generate a plot of the data.')
+    form3 = st.form("Result")
+    form3.subheader('Result')
 
-    plotbn = form3.form_submit_button("Plot")
-    if plotbn:                    
+    X_train = st.session_state['X_train']
+    X_test = st.session_state['X_test']
+    y_train= st.session_state['y_train']
+    y_test = st.session_state['y_test']
 
-        clf = st.session_state['clf']
-        X_test = st.session_state['X_test']
-        y_test_pred = st.session_state['y_test_pred']
-        visualize_classifier(form3, clf, X_test, y_test_pred)
+    clf = st.session_state['clf']
+    clf.fit(X_train, y_train)
+    y_test_pred = clf.predict(X_test)
 
-        if st.session_state['selected_kernel'] == 0:
-            text = """For partially overlapping clusters, the linear kernel might be
-            able to find a hyperplane (straight line in higher dimensions) that 
-            separates the majority of points, but misclassifications will 
-            likely occur due to the overlap."""
-        elif st.session_state['selected_kernel'] == 1:
-            text = """The polynomial kernel can be more effective with 
-            overlapping clusters compared to the linear kernel. By mapping the 
-            data to a higher-dimensional space, it can potentially find non-linear 
-            decision boundaries that better separate the classes even if 
-            they overlap in the original feature space."""
-        else:
-            text = """The RBF kernel is often the most robust choice for dealing 
-            with overlapping clusters. It uses a Gaussian function to measure 
-            similarity between data points, allowing for flexible and smooth decision
-            boundaries even in complex, non-linear scenarios."""
-            
-        form3.write(text)
+    form3.subheader('Confusion Matrix')
+    form3.write('Confusion Matrix')
+    cm = confusion_matrix(y_test, y_test_pred)
+    form3.text(cm)
+
+    form3.subheader('Performance Metrics')
+    form3.text(classification_report(y_test, y_test_pred))
+
+    # save the clf to the session state
+    st.session_state['clf'] = clf
+
+    if st.session_state['selected_model'] == 0:     # logistic regression
+        text = """For partially overlapping clusters, the linear kernel might be
+        able to find a hyperplane (straight line in higher dimensions) that 
+        separates the majority of points, but misclassifications will 
+        likely occur due to the overlap."""
+    elif st.session_state['selected_model'] == 1:   # naive bayes
+        text = """The polynomial kernel can be more effective with 
+        overlapping clusters compared to the linear kernel. By mapping the 
+        data to a higher-dimensional space, it can potentially find non-linear 
+        decision boundaries that better separate the classes even if 
+        they overlap in the original feature space."""
+    else:   # SVM
+        text = """The RBF kernel is often the most robust choice for dealing 
+        with overlapping clusters. It uses a Gaussian function to measure 
+        similarity between data points, allowing for flexible and smooth decision
+        boundaries even in complex, non-linear scenarios."""
+        
+    form3.write(text)
+
     submit3 = form3.form_submit_button("Reset")
     if submit3:
         st.session_state.reset_app = True
         st.session_state.clear()
-
-def visualize_classifier(form, classifier, X, y, title=''):
-    # Define the minimum and maximum values for X and Y
-    # that will be used in the mesh grid
-    min_x, max_x = X[:, 0].min() - 1.0, X[:, 0].max() + 1.0
-    min_y, max_y = X[:, 1].min() - 1.0, X[:, 1].max() + 1.0
-
-    # Define the step size to use in plotting the mesh grid 
-    mesh_step_size = 0.01
-
-    # Define the mesh grid of X and Y values
-    x_vals, y_vals = np.meshgrid(np.arange(min_x, max_x, mesh_step_size), np.arange(min_y, max_y, mesh_step_size))
-
-    # Run the classifier on the mesh grid
-    output = classifier.predict(np.c_[x_vals.ravel(), y_vals.ravel()])
-
-    # Reshape the output array
-    output = output.reshape(x_vals.shape)
-    
-    # Create the figure and axes objects
-    fig, ax = plt.subplots()
-
-    # Specify the title
-    ax.set_title(title)
-    
-    # Choose a color scheme for the plot
-    ax.pcolormesh(x_vals, y_vals, output, cmap=plt.cm.gray)
-    
-    # Overlay the training points on the plot
-    ax.scatter(X[:, 0], X[:, 1], c=y, s=75, edgecolors='black', linewidth=1, cmap=plt.cm.Paired)
-    
-    # Specify the boundaries of the plot
-    ax.set_xlim(x_vals.min(), x_vals.max())
-    ax.set_ylim(y_vals.min(), y_vals.max())
-    
-    # Specify the ticks on the X and Y axes
-    ax.set_xticks(np.arange(int(X[:, 0].min() - 1), int(X[:, 0].max() + 1), 1.0))
-    ax.set_yticks(np.arange(int(X[:, 1].min() - 1), int(X[:, 1].max() + 1), 1.0))
-
-    
-    form.pyplot(fig)
-
 
 if __name__ == "__main__":
     app()
