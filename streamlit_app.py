@@ -123,6 +123,31 @@ def display_form2():
     form2.subheader('Dataset Description')
     form2.write(df.describe().T)
 
+    # Create a figure and an axis
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Create a scatter plot with color based on species
+    sns.scatterplot(
+        x="sepal width (cm)",
+        y="sepal length (cm)",
+        hue="target",
+        palette="deep",
+        data=df,
+        ax=ax,
+    )
+
+    # Add labels and title
+    ax.set_xlabel("Sepal Width (cm)")
+    ax.set_ylabel("Sepal Length (cm)")
+    ax.set_title("Sepal Width vs. Sepal Length by Iris Species")
+
+    # Add legend
+    plt.legend(title="Species")
+
+    # Show the plot
+    form2.pyplot(fig)
+
+
     form2.subheader('Select the kernel')
 
     # Create the selecton of classifier
