@@ -44,7 +44,6 @@ def app():
     
     if "y_test" not in st.session_state: 
         st.session_state["y_yest"] = []
-    X_train, X_test, y_train, y_test
 
     if "selected_kernel" not in st.session_state: 
         st.session_state["selected_model"] = 0
