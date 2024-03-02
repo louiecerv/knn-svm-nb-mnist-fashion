@@ -219,7 +219,7 @@ def display_form3():
     form3 = st.form("Result")
     classifier = ''
     if st.session_state['selected_model'] == 0:     # logistic regression
-        text = """The logistic regression si easy to interpret. Coefficients 
+        text = """Logistic regression is easy to interpret. Coefficients 
         provide insights into the relationship between features 
         and class probabilities. Relatively fast training compared to 
         some other algorithms.."""
