@@ -219,26 +219,23 @@ def display_form3():
     form3 = st.form("Result")
     classifier = ''
     if st.session_state['selected_model'] == 0:     # logistic regression
-        text = """For partially overlapping clusters, the linear kernel might be
-        able to find a hyperplane (straight line in higher dimensions) that 
-        separates the majority of points, but misclassifications will 
-        likely occur due to the overlap."""
+        text = """The logistic regression si easy to interpret. Coefficients 
+        provide insights into the relationship between features 
+        and class probabilities. Relatively fast training compared to 
+        some other algorithms.."""
         classifier = 'Logistic Regression'
     elif st.session_state['selected_model'] == 1:   # naive bayes
-        text = """The polynomial kernel can be more effective with 
-        overlapping clusters compared to the linear kernel. By mapping the 
-        data to a higher-dimensional space, it can potentially find non-linear 
-        decision boundaries that better separate the classes even if 
-        they overlap in the original feature space."""
+        text = """Naive bayes is simple to implement and computationally 
+        efficient. Performs well with independent features (features with 
+        minimal correlation)."""
         classifier = 'Naive Bayes'
     else:   # SVM
-        text = """The RBF kernel is often the most robust choice for dealing 
-        with overlapping clusters. It uses a Gaussian function to measure 
-        similarity between data points, allowing for flexible and smooth decision
-        boundaries even in complex, non-linear scenarios."""
+        text = """SVM generally achieves the highest accuracy on the Iris dataset.
+        It has good performance on various datasets, including those with 
+        non-linear relationships. It can be effective for high-dimensional data."""
         classifier = "Support Vector Machine"
 
-    form3.subheader(classifier)
+    form3.subheader('Performance of the ' + classifier)
 
     X_train = st.session_state['X_train']
     X_test = st.session_state['X_test']
