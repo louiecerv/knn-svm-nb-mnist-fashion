@@ -71,14 +71,7 @@ def display_form1():
     especially for: Classification (predicting the flower species based on the
     measurements) Visualization (exploring relationships between features and species)"""
     form1.write(text)
-    form1.write('Interesting characteristics:')
-    text = """One species (Setosa) is easily distinguishable from the others 
-    based on its sepal measurements. The other two species (Versicolor and Virginica) 
-    have some overlap in their measurements, making them more challenging to 
-    distinguish solely based on two features. Overall, the Iris dataset, despite its 
-    simplicity, offers a valuable resource for understanding and practicing 
-    fundamental machine learning concepts."""
-    form1.write(text)
+  
 
     submit1 = form1.form_submit_button("Start")
 
@@ -109,12 +102,13 @@ def display_form2():
     # Split data into training and testing sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    text = """Imagine a triangle formed by the three centroids of class 0. 
-    Class 1 data points will be scattered around the center of the triangle, 
-    with some points falling inside the triangle and overlapping with 
-    class 0 data points. This creates a challenging scenario for SVMs with linear kernels,
-    as a straight line cannot perfectly separate the overlapping regions."""
-
+    form2.write('Interesting characteristics:')
+    text = """One species (Setosa) is easily distinguishable from the others 
+    based on its sepal measurements. The other two species (Versicolor and Virginica) 
+    have some overlap in their measurements, making them more challenging to 
+    distinguish solely based on two features. Overall, the Iris dataset, despite its 
+    simplicity, offers a valuable resource for understanding and practicing 
+    fundamental machine learning concepts."""
     form2.write(text)
 
     form2.subheader('Browse the Dataset') 
@@ -147,6 +141,10 @@ def display_form2():
     # Show the plot
     form2.pyplot(fig)
 
+    text = """One species (Setosa) is easily distinguishable from the others 
+    based on its sepal measurements"""
+    form2.write(text)
+
     # Create a figure and an axis
     fig, ax = plt.subplots(figsize=(6, 6))
 
@@ -170,6 +168,10 @@ def display_form2():
 
     # Show the plot
     form2.pyplot(fig)
+
+    text = """The clusters show the distint species  
+    based on their petal measurements"""
+    form2.write(text)
 
     form2.subheader('Select the kernel')
 
