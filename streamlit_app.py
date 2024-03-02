@@ -45,7 +45,7 @@ def app():
     if "y_test" not in st.session_state: 
         st.session_state["y_yest"] = []
 
-    if "selected_kernel" not in st.session_state: 
+    if "selected_model" not in st.session_state: 
         st.session_state["selected_model"] = 0
 
 def display_form1():
@@ -199,13 +199,13 @@ def display_form2():
             intercept_scaling=1, max_iter=100, multi_class='auto',
             n_jobs=1, penalty='l2', random_state=42, solver='lbfgs',
             tol=0.0001, verbose=0, warm_start=False)
-        st.session_state['selected_kernel'] = 0
+        st.session_state['selected_model'] = 0
     elif selected_option=='Support Vector Machine':
         clf = SVC(kernel='rbf', gamma=10) 
-        st.session_state['selected_kernel'] = 2
+        st.session_state['selected_model'] = 2
     else:
         clf = GaussianNB()
-        st.session_state['selected_kernel'] = 1
+        st.session_state['selected_model'] = 1
 
     # save the clf to the session variable
     st.session_state['clf'] = clf
