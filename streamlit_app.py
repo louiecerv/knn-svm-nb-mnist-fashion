@@ -192,7 +192,7 @@ def display_form2():
 
     clf = GaussianNB() 
     options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
-    selected_option = st.selectbox('Select the classifier', options)
+    selected_option = form2.selectbox('Select the classifier', options)
     if selected_option =='Logistic Regression':
         clf = LogisticRegression(C=1.0, class_weight=None, 
             dual=False, fit_intercept=True,
@@ -217,7 +217,28 @@ def display_form2():
 def display_form3():
     st.session_state["current_form"] = 3
     form3 = st.form("Result")
-    form3.subheader('Result')
+    classifier = ''
+    if st.session_state['selected_model'] == 0:     # logistic regression
+        text = """For partially overlapping clusters, the linear kernel might be
+        able to find a hyperplane (straight line in higher dimensions) that 
+        separates the majority of points, but misclassifications will 
+        likely occur due to the overlap."""
+        classifier = 'Logistic Regression'
+    elif st.session_state['selected_model'] == 1:   # naive bayes
+        text = """The polynomial kernel can be more effective with 
+        overlapping clusters compared to the linear kernel. By mapping the 
+        data to a higher-dimensional space, it can potentially find non-linear 
+        decision boundaries that better separate the classes even if 
+        they overlap in the original feature space."""
+        classifier = 'Naive Bayes'
+    else:   # SVM
+        text = """The RBF kernel is often the most robust choice for dealing 
+        with overlapping clusters. It uses a Gaussian function to measure 
+        similarity between data points, allowing for flexible and smooth decision
+        boundaries even in complex, non-linear scenarios."""
+        classifier = "Support Vector Machine"
+
+    form3.subheader(classifier)
 
     X_train = st.session_state['X_train']
     X_test = st.session_state['X_test']
@@ -236,27 +257,10 @@ def display_form3():
     form3.subheader('Performance Metrics')
     form3.text(classification_report(y_test, y_test_pred))
 
+    form3.write(text)
+
     # save the clf to the session state
     st.session_state['clf'] = clf
-
-    if st.session_state['selected_model'] == 0:     # logistic regression
-        text = """For partially overlapping clusters, the linear kernel might be
-        able to find a hyperplane (straight line in higher dimensions) that 
-        separates the majority of points, but misclassifications will 
-        likely occur due to the overlap."""
-    elif st.session_state['selected_model'] == 1:   # naive bayes
-        text = """The polynomial kernel can be more effective with 
-        overlapping clusters compared to the linear kernel. By mapping the 
-        data to a higher-dimensional space, it can potentially find non-linear 
-        decision boundaries that better separate the classes even if 
-        they overlap in the original feature space."""
-    else:   # SVM
-        text = """The RBF kernel is often the most robust choice for dealing 
-        with overlapping clusters. It uses a Gaussian function to measure 
-        similarity between data points, allowing for flexible and smooth decision
-        boundaries even in complex, non-linear scenarios."""
-        
-    form3.write(text)
 
     submit3 = form3.form_submit_button("Reset")
     if submit3:
