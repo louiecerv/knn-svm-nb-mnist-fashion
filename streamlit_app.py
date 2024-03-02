@@ -141,8 +141,8 @@ def display_form2():
     # Show the plot
     form2.pyplot(fig)
 
-    text = """One species (Setosa) is easily distinguishable from the others 
-    based on its sepal measurements"""
+    text = """One species (Setosa) is easily distinguishable 
+    from the others based on its sepal measurements"""
     form2.write(text)
 
     # Create a figure and an axis
