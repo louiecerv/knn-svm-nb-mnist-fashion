@@ -263,6 +263,7 @@ def display_form3():
     if submit3:
         st.session_state.reset_app = True
         st.session_state.clear()
+        form3.write("If the form does not reset, click the reset button again.")
 
 if __name__ == "__main__":
     app()
