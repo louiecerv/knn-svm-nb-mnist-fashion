@@ -153,7 +153,7 @@ def display_form2():
         x="petal width (cm)",
         y="petal length (cm)",
         hue="target",
-        palette="deep",
+        palette="bright",
         data=df,
         ax=ax,
     )
@@ -169,8 +169,8 @@ def display_form2():
     # Show the plot
     form2.pyplot(fig)
 
-    text = """The clusters show the distint species  
-    based on their petal measurements"""
+    text = """The clusters show the distint species based on 
+    their petal measurements"""
     form2.write(text)
 
     form2.subheader('Select the kernel')
