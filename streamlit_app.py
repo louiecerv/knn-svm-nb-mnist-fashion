@@ -147,6 +147,29 @@ def display_form2():
     # Show the plot
     form2.pyplot(fig)
 
+    # Create a figure and an axis
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Create a scatter plot with color based on species
+    sns.scatterplot(
+        x="petal width (cm)",
+        y="petal length (cm)",
+        hue="target",
+        palette="deep",
+        data=df,
+        ax=ax,
+    )
+
+    # Add labels and title
+    ax.set_xlabel("Petal Width (cm)")
+    ax.set_ylabel("Petal Length (cm)")
+    ax.set_title("Petal Width vs. Petal Length by Iris Species")
+
+    # Add legend
+    plt.legend(title="Species")
+
+    # Show the plot
+    form2.pyplot(fig)
 
     form2.subheader('Select the kernel')
 
