@@ -67,6 +67,8 @@ def display_form1():
     blue, yellow, white, and even black."""
     form1.subheader('The Iris Dataset')
 
+    form1.write(text)
+
     text = """The Iris dataset is a well-known and widely used dataset in the field
     of machine learning. Here's a breakdown of its key aspects:"""
     form1.write(text)
