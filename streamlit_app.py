@@ -65,10 +65,8 @@ def display_form1():
     boasting over 310 recognized species. These plants are known for their 
     stunning blooms, which come in a wide range of colors, including purple, 
     blue, yellow, white, and even black."""
-    form1.subheader('The Iris Dataset')
-
     form1.write(text)
-
+    form1.subheader('The Iris Dataset')
     text = """The Iris dataset is a well-known and widely used dataset in the field
     of machine learning. Here's a breakdown of its key aspects:"""
     form1.write(text)
