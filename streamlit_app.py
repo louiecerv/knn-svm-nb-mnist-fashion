@@ -60,8 +60,11 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
-    form1.image('iris_flower.jpg', caption="Iris Plant", use_column_width=True)
-
+    form1.image('iris_flower.jpg', caption="The Iris Plant", use_column_width=True)
+    text = """The iris is a beautiful and diverse flowering plant genus, 
+    boasting over 310 recognized species. These plants are known for their 
+    stunning blooms, which come in a wide range of colors, including purple, 
+    blue, yellow, white, and even black."""
     form1.subheader('The Iris Dataset')
 
     text = """The Iris dataset is a well-known and widely used dataset in the field
