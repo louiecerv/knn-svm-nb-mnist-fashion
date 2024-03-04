@@ -4,9 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from sklearn import tree
-from sklearn.svm import SVC
-from sklearn.naive_bayes import GaussianNB
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -194,17 +192,17 @@ def display_form2():
 
     # Create the selecton of classifier
 
-    clf = GaussianNB() 
-    options = ['Decision Tree', 'Naive Bayes', 'Support Vector Machine']
+    clf = tree.DecisionTreeClassifier()
+    options = ['Decision Tree', 'Random Forest Classifier', 'Extreme Random Forest Classifier']
     selected_option = form2.selectbox('Select the classifier', options)
-    if selected_option =='Decision Tree':
-        clf = tree.DecisionTreeClassifier()
+    if selected_option =='Random Forest Classifier':
+        clf = RandomForestClassifier(n_jobs=2, random_state=0)
         st.session_state['selected_model'] = 0
-    elif selected_option=='Support Vector Machine':
-        clf = SVC(kernel='rbf', gamma=10) 
+    elif selected_option=='Extreme Random Forest Classifier':        
+        clf = ExtraTreesClassifier(n_estimators=100, max_depth=4, random_state=0)
         st.session_state['selected_model'] = 2
     else:
-        clf = GaussianNB()
+        clf = tree.DecisionTreeClassifier()
         st.session_state['selected_model'] = 1
 
     # save the clf to the session variable
