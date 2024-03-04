@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
+from sklearn import tree
 from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
@@ -194,14 +195,10 @@ def display_form2():
     # Create the selecton of classifier
 
     clf = GaussianNB() 
-    options = ['Logistic Regression', 'Naive Bayes', 'Support Vector Machine']
+    options = ['Decision Tree', 'Naive Bayes', 'Support Vector Machine']
     selected_option = form2.selectbox('Select the classifier', options)
-    if selected_option =='Logistic Regression':
-        clf = LogisticRegression(C=1.0, class_weight=None, 
-            dual=False, fit_intercept=True,
-            intercept_scaling=1, max_iter=100, multi_class='auto',
-            n_jobs=1, penalty='l2', random_state=42, solver='lbfgs',
-            tol=0.0001, verbose=0, warm_start=False)
+    if selected_option =='Decision Tree':
+        clf = tree.DecisionTreeClassifier()
         st.session_state['selected_model'] = 0
     elif selected_option=='Support Vector Machine':
         clf = SVC(kernel='rbf', gamma=10) 
