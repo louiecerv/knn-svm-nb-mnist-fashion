@@ -15,8 +15,7 @@ def app():
     if "reset_app" not in st.session_state:
         st.session_state.reset_app = False
 
-    text = """Decision Tree, Random Forest and Extreme
-        Random Forest on the Iris Dataset"""
+    text = """Decision Tree, Random Forest and Extreme Random Forest on the Iris Dataset"""
     st.subheader(text)
 
     # Use session state to track the current form
