@@ -216,22 +216,31 @@ def display_form3():
     st.session_state["current_form"] = 3
     form3 = st.form("Result")
     classifier = ''
-    if st.session_state['selected_model'] == 0:     # logistic regression
-        text = """Logistic regression is easy to interpret. Coefficients 
-        provide insights into the relationship between features 
-        and class probabilities. Relatively fast training compared to 
-        some other algorithms.."""
-        classifier = 'Logistic Regression'
-    elif st.session_state['selected_model'] == 1:   # naive bayes
-        text = """Naive bayes is simple to implement and computationally 
-        efficient. Performs well with independent features (features with 
-        minimal correlation)."""
-        classifier = 'Naive Bayes'
-    else:   # SVM
-        text = """SVM generally achieves the highest accuracy on the Iris dataset.
-        It has good performance on various datasets, including those with 
-        non-linear relationships. It can be effective for high-dimensional data."""
-        classifier = "Support Vector Machine"
+    if st.session_state['selected_model'] == 0:     # decision tree
+        text = """Achieves good accuracy, but can be prone to 
+        overfitting, leading to lower performance on unseen data.
+        Simple and interpretable, allowing visualization of decision rules.
+        Susceptible to changes in the training data, potentially 
+        leading to high variance in predictions."""
+        classifier = 'Decision Tree'
+    elif st.session_state['selected_model'] == 1:   # Random Forest
+        text = """Generally outperforms a single decision tree, 
+        reaching accuracy close to 98%. Reduces overfitting through 
+        averaging predictions from multiple trees. Ensemble method - 
+        combines predictions from multiple decision trees, leading to 
+        improved generalization and reduced variance. Less interpretable 
+        compared to a single decision tree due to the complex 
+        ensemble structure."""
+        classifier = 'Random Forest'
+    else:   # Extreme Random Forest
+        text = """Performance: Can achieve similar or slightly better 
+        accuracy compared to a random forest, but results can vary 
+        depending on hyperparameter tuning. Introduces additional randomness 
+        during tree building by randomly selecting features at each split.  Aims to 
+        further improve generalization and reduce overfitting by increasing 
+        the diversity of trees in the ensemble. Requires careful 
+        hyperparameter tuning to achieve optimal performance."""
+        classifier = "Extreme Random Forest"
 
     form3.subheader('Performance of the ' + classifier)
 
