@@ -62,7 +62,7 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
-    form1.image('MNIST', caption="Modified National Institute of Standards and Technology", use_column_width=True)
+    form1.image('MNIST.png', caption="Modified National Institute of Standards and Technology", use_column_width=True)
     text = """MNIST is a large database of handwritten digits that is commonly used for training and
     testing various image processing systems1234. The acronym stands for Modified National Institute 
     of Standards and Technology23. MNIST is a popular dataset in the field of machine learning and 
