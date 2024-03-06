@@ -16,7 +16,7 @@ def app():
     if "reset_app" not in st.session_state:
         st.session_state.reset_app = False
 
-    text = """Decision Tree, Random Forest and K-Nearest Neighbor on the MNIST Dataset"""
+    text = """Image Classification on the MNIST Fashion Dataset"""
     st.subheader(text)
 
     # Use session state to track the current form
@@ -60,11 +60,17 @@ def display_form1():
     West Visayas State University"""
     form1.text(text)
 
-    form1.image('MNIST.png', caption="Modified National Institute of Standards and Technology", use_column_width=True)
-    text = """MNIST is a large database of handwritten digits that is commonly used for training and
-    testing various image processing systems. The acronym stands for Modified National Institute 
-    of Standards and Technology. MNIST is a popular dataset in the field of machine learning and 
-    can provide a baseline for benchmarking algorithms."""
+    form1.image('fashion.png', caption="Modified National Institute of Standards and Technology", use_column_width=True)
+    text = """The Fashion MNIST dataset is a popular choice for testing and comparing machine
+    learning algorithms, particularly those suited for image classification. 
+    \nRelatively small size: With 70,000 images, it's computationally efficient to train and 
+    test on, making it ideal for initial experimentation and algorithm evaluation.
+    \nSimple image format: The images are grayscale and low-resolution (28x28 pixels), 
+    simplifying preprocessing and reducing computational demands.
+    \nMultiple classes: It consists of 10 distinct clothing categories, allowing you to assess 
+    the classifiers' ability to differentiate between various categories.
+    \nBenchmarking: As a widely used dataset, it facilitates comparison of your models' 
+    performance with established benchmarks for these algorithms on the same dataset."""
     form1.write(text)
   
     submit1 = form1.form_submit_button("Start")
