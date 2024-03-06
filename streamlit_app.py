@@ -123,7 +123,7 @@ def display_form2():
     fig, axes = plt.subplots(5, 5, figsize=(10, 10))
     # Plot each image on a separate subplot
     for i, ax in enumerate(axes.ravel()):
-        ax.imshow(images[i], cmap="gray")
+        ax.imshow(images[i], cmap=plt.cm.binary)
         ax.set_xticks([])
         ax.set_yticks([])
         ax.set_title(f"Digit: {train_labels[i]}")
