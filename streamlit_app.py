@@ -113,7 +113,7 @@ def display_form2():
     X_train = st.session_state['X_train']
     X_test = st.session_state['X_test']
 
-    form2.subheader('Browse the Dataset') 
+    form2.subheader('First 25 images in the MNIST dataset') 
 
     # Get the first 25 images and reshape them to 28x28 pixels
     train_images = np.array(X_train)
