@@ -80,8 +80,8 @@ def display_form2():
     # Load MNIST dataset
     mnist = fetch_openml('mnist_784', version=1, data_home=".", return_X_y=True)
 
-    # Extract only the first images and labels
-    size = 5000
+    # Extract only the specified number of images and labels
+    size = 10000
     X, y = mnist
     X = X[:size]
     y = y[:size]
