@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.datasets import fetch_openml
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -15,7 +17,7 @@ def app():
     if "reset_app" not in st.session_state:
         st.session_state.reset_app = False
 
-    text = """Decision Tree, Random Forest and Extreme Random Forest on the Iris Dataset"""
+    text = """Decision Tree, Random Forest and K-Nearest Neighbor on the MNIST Dataset"""
     st.subheader(text)
 
     # Use session state to track the current form
@@ -60,29 +62,13 @@ def display_form1():
     form1.text(text)
 
     form1.header('Description')
-    form1.image('iris_flower.jpg', caption="The Iris Plant", use_column_width=True)
-    text = """The iris is a beautiful and diverse flowering plant genus, 
-    boasting over 310 recognized species. These plants are known for their 
-    stunning blooms, which come in a wide range of colors, including purple, 
-    blue, yellow, white, and even black."""
-    form1.write(text)
-    form1.subheader('The Iris Dataset')
-    text = """The Iris dataset is a well-known and widely used dataset in the field
-    of machine learning. Here's a breakdown of its key aspects:"""
-    form1.write(text)
-    text = """Data points: 150, representing 50 samples from each of three Iris species: 
-    Iris setosa, Iris versicolor, and Iris virginica.
-    \nFeatures: Four measurements for each flower (in centimeters): Sepal length, 
-    Sepal width, Petal length, Petal width)
-    \nTarget variable: The species of the Iris flower (Setosa, Versicolor, or Virginica)."""
-    form1.write(text)
-    form1.write('Applications:')
-    text = """Commonly used to introduce and test various machine learning algorithms, 
-    especially for: Classification (predicting the flower species based on the
-    measurements) Visualization (exploring relationships between features and species)"""
+    form1.image('MNIST', caption="Modified National Institute of Standards and Technology", use_column_width=True)
+    text = """MNIST is a large database of handwritten digits that is commonly used for training and
+    testing various image processing systems1234. The acronym stands for Modified National Institute 
+    of Standards and Technology23. MNIST is a popular dataset in the field of machine learning and 
+    can provide a baseline for benchmarking algorithms"""
     form1.write(text)
   
-
     submit1 = form1.form_submit_button("Start")
 
     if submit1:
