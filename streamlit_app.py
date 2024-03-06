@@ -86,7 +86,6 @@ def display_form1():
     submit1 = form1.form_submit_button("Start")
 
     if submit1:
-        form1 = [];
         # Go to the next form        
         display_form2()
 
@@ -113,12 +112,13 @@ def display_form2():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     #save the values to the session state
+    
     st.session_state['X_train'] = X_train
     st.session_state['X_test'] = X_test
     st.session_state['y_train'] = y_train
     st.session_state['y_test'] = y_test
 
-    form2.write('Interesting characteristics:')
+    form2.text('Interesting characteristics:')
     text = """One species (Setosa) is easily distinguishable from the others 
     based on its sepal measurements. The other two species (Versicolor and Virginica) 
     have some overlap in their measurements, making them more challenging to 
