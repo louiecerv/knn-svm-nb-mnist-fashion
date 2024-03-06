@@ -193,7 +193,12 @@ def display_form3():
         hyperparameter tuning to achieve optimal performance."""
         classifier = "Extreme Random Forest"
     else:
-        text = """K-Nearest Neighbor"""
+        text = """Accuracy: While KNN can achieve reasonable accuracy (around 80-90%), 
+        it's often outperformed by more sophisticated models like Support 
+        Vector Machines (SVMs) or Convolutional Neural Networks (CNNs) which can 
+        reach over 97% accuracy.\nComputational cost: Classifying new data points 
+        requires comparing them to all data points in the training set, making 
+        it computationally expensive for large datasets like MNIST."""
         classifier = "K-Nearest Neighbor"
 
     form3.subheader('Performance of the ' + classifier)
