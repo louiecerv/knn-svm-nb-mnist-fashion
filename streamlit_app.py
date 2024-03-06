@@ -7,7 +7,6 @@ from sklearn import tree
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.datasets import fetch_openml
-from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
@@ -61,7 +60,6 @@ def display_form1():
     West Visayas State University"""
     form1.text(text)
 
-    form1.header('Description')
     form1.image('MNIST.png', caption="Modified National Institute of Standards and Technology", use_column_width=True)
     text = """MNIST is a large database of handwritten digits that is commonly used for training and
     testing various image processing systems1234. The acronym stands for Modified National Institute 
@@ -79,101 +77,50 @@ def display_form2():
     st.session_state["current_form"] = 2
 
     form2 = st.form("training")
-    # Load the iris dataset
-    data = load_iris()
+    # Load MNIST dataset
+    mnist = fetch_openml('mnist_784', version=1, data_home=".")
 
-    # Convert data features to a DataFrame
-    feature_names = data.feature_names
-    df = pd.DataFrame(data.data, columns=feature_names)
-    df['target'] = data.target
-    
-    form2.write('The iris dataset')
-    form2.write(df)
+    # Separate features (data) and labels (target)
+    X_train, X_test = mnist.data[:60000], mnist.data[60000:]
+    y_train, y_test = mnist.target[:60000], mnist.target[60000:]
 
-    # Separate features and target variable
-    X = df.drop('target', axis=1)  # Target variable column name
-    y = df['target']
-
-    # Split data into training and testing sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    #save the values to the session state
-    
+    #save the values to the session state    
     st.session_state['X_train'] = X_train
     st.session_state['X_test'] = X_test
     st.session_state['y_train'] = y_train
     st.session_state['y_test'] = y_test
 
-    form2.text('Interesting characteristics:')
-    text = """One species (Setosa) is easily distinguishable from the others 
-    based on its sepal measurements. The other two species (Versicolor and Virginica) 
-    have some overlap in their measurements, making them more challenging to 
-    distinguish solely based on two features. Overall, the Iris dataset, despite its 
-    simplicity, offers a valuable resource for understanding and practicing 
-    fundamental machine learning concepts."""
+    form2.text('The task: Classify handwritten digits from 0 to 9 based on a given image.')
+    text = """Dataset: MNIST - 70,000 images of handwritten digits (28x28 pixels), each labeled 
+    with its corresponding digit (0-9).
+    \nModels:
+    \nK-Nearest Neighbors (KNN):
+    \nEach image is represented as a 784-dimensional vector (28x28 pixels). 
+    To classify a new image, its distance is measured to K nearest neighbors in the 
+    training data. The majority class label among the neighbors is assigned to the new image.
+    \nDecision Tree:
+    \nA tree-like structure is built based on features (pixel intensities) of the images. 
+    \nThe tree splits the data based on decision rules (e.g., "pixel intensity at 
+    position X is greater than Y"). The new image is navigated through the tree based on 
+    its features, reaching a leaf node representing the predicted digit class.
+    \nRandom Forest:
+    \nAn ensemble of multiple decision trees are built, each trained on a random subset of 
+    features (pixels) and a random subset of data.
+    \nTo classify a new image, it is passed through each decision tree, and the majority class 
+    label from all predictions is assigned."""
     form2.write(text)
+
+    X_train = st.session_state['X_train']
+    X_test = st.session_state['X_test']
 
     form2.subheader('Browse the Dataset') 
-    form2.write(df)
-
-    form2.subheader('Dataset Description')
-    form2.write(df.describe().T)
-
-    # Create a figure and an axis
-    fig, ax = plt.subplots(figsize=(6, 6))
-
-    # Create a scatter plot with color based on species
-    sns.scatterplot(
-        x="sepal width (cm)",
-        y="sepal length (cm)",
-        hue="target",
-        palette="deep",
-        data=df,
-        ax=ax,
-    )
-
-    # Add labels and title
-    ax.set_xlabel("Sepal Width (cm)")
-    ax.set_ylabel("Sepal Length (cm)")
-    ax.set_title("Sepal Width vs. Sepal Length by Iris Species")
-
-    # Add legend
-    plt.legend(title="Species")
-
-    # Show the plot
+    # Display the first 25 images in the training set
+    fig, axs = plt.subplots(5, 5, figsize=(10, 10))
+    axs = axs.ravel()
+    for i in range(25):
+        axs[i].imshow(X_train[i], cmap=plt.cm.binary)
+        axs[i].axis('off')
     form2.pyplot(fig)
-
-    text = """One species (Setosa) is easily distinguishable 
-    from the others based on its sepal measurements"""
-    form2.write(text)
-
-    # Create a figure and an axis
-    fig, ax = plt.subplots(figsize=(6, 6))
-
-    # Create a scatter plot with color based on species
-    sns.scatterplot(
-        x="petal width (cm)",
-        y="petal length (cm)",
-        hue="target",
-        palette="bright",
-        data=df,
-        ax=ax,
-    )
-
-    # Add labels and title
-    ax.set_xlabel("Petal Width (cm)")
-    ax.set_ylabel("Petal Length (cm)")
-    ax.set_title("Petal Width vs. Petal Length by Iris Species")
-
-    # Add legend
-    plt.legend(title="Species")
-
-    # Show the plot
-    form2.pyplot(fig)
-
-    text = """The clusters show the distint species based on 
-    their petal measurements"""
-    form2.write(text)
 
     form2.subheader('Select the classifier')
 
