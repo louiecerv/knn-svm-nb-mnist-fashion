@@ -114,12 +114,19 @@ def display_form2():
     X_test = st.session_state['X_test']
 
     form2.subheader('Browse the Dataset') 
-    # Display the first 25 images in the training set
-    fig, axs = plt.subplots(5, 5, figsize=(10, 10))
-    axs = axs.ravel()
-    for i in range(25):
-        axs[i].imshow(X_train[i], cmap=plt.cm.binary)
-        axs[i].axis('off')
+
+    # Get the first 25 images and reshape them to 28x28 pixels
+    images = X_train[:25].reshape(-1, 28, 28)
+    # Create a 5x5 grid of subplots
+    fig, axes = plt.subplots(5, 5, figsize=(10, 10))
+    # Plot each image on a separate subplot
+    for i, ax in enumerate(axes.ravel()):
+        ax.imshow(images[i], cmap="gray")
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_title(f"Digit: {X_test[i]}")
+    # Show the plot
+    plt.tight_layout()
     form2.pyplot(fig)
 
     form2.subheader('Select the classifier')
