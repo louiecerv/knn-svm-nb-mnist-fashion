@@ -81,8 +81,9 @@ def display_form2():
     mnist = fetch_openml('mnist_784', version=1, data_home=".")
 
     # Separate features (data) and labels (target)
-    X_train, X_test = mnist.data[:60000], mnist.data[60000:]
-    y_train, y_test = mnist.target[:60000], mnist.target[60000:]
+    size = 500
+    X_train, X_test = mnist.data[:size], mnist.data[60000:]
+    y_train, y_test = mnist.target[:size], mnist.target[60000:]
 
     #save the values to the session state    
     st.session_state['X_train'] = X_train
