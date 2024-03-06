@@ -116,7 +116,9 @@ def display_form2():
     form2.subheader('Browse the Dataset') 
 
     # Get the first 25 images and reshape them to 28x28 pixels
-    images = X_train[:25].reshape(-1, 28, 28)
+    train_images = np.array(X_train)
+    train_labels = np.array(y_train)
+    images = train_images[:25].reshape(-1, 28, 28)
     # Create a 5x5 grid of subplots
     fig, axes = plt.subplots(5, 5, figsize=(10, 10))
     # Plot each image on a separate subplot
@@ -124,7 +126,7 @@ def display_form2():
         ax.imshow(images[i], cmap="gray")
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_title(f"Digit: {X_test[i]}")
+        ax.set_title(f"Digit: {train_labels[i]}")
     # Show the plot
     plt.tight_layout()
     form2.pyplot(fig)
