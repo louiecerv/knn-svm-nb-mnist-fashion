@@ -178,7 +178,7 @@ def display_form3():
         compared to a single decision tree due to the complex 
         ensemble structure."""
         classifier = 'Random Forest'
-    else:   # Extreme Random Forest
+    elif st.session_state['selected_model'] == 2:   # Extreme Random Forest
         text = """Performance: Can achieve similar or slightly better 
         accuracy compared to a random forest, but results can vary 
         depending on hyperparameter tuning. Introduces additional randomness 
@@ -187,6 +187,9 @@ def display_form3():
         the diversity of trees in the ensemble. Requires careful 
         hyperparameter tuning to achieve optimal performance."""
         classifier = "Extreme Random Forest"
+    else:
+        text = """K-Nearest Neighbor"""
+        classifier = "K-Nearest Neighbor"
 
     form3.subheader('Performance of the ' + classifier)
 
