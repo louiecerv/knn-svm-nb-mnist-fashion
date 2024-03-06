@@ -127,17 +127,20 @@ def display_form2():
     # Create the selecton of classifier
 
     clf = tree.DecisionTreeClassifier()
-    options = ['Decision Tree', 'Random Forest Classifier', 'Extreme Random Forest Classifier']
+    options = ['Decision Tree', 'Random Forest Classifier', 'Extreme Random Forest Classifier', 'K Nearest Neighbor']
     selected_option = form2.selectbox('Select the classifier', options)
     if selected_option =='Random Forest Classifier':
         clf = RandomForestClassifier(n_jobs=2, random_state=0)
-        st.session_state['selected_model'] = 0
+        st.session_state['selected_model'] = 1
     elif selected_option=='Extreme Random Forest Classifier':        
         clf = ExtraTreesClassifier(n_estimators=100, max_depth=4, random_state=0)
         st.session_state['selected_model'] = 2
+    elif selected_option == 'K Nearest Neighbor':
+        clf = KNeighborsClassifier(n_neighbors=5)
+        st.session_state['selected_model'] = 3
     else:
         clf = tree.DecisionTreeClassifier()
-        st.session_state['selected_model'] = 1
+        st.session_state['selected_model'] = 0
 
     # save the clf to the session variable
     st.session_state['clf'] = clf
