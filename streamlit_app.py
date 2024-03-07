@@ -90,7 +90,7 @@ def display_form2():
     
     # Extract only the specified number of images and labels
     size = 10000
-        X = X[:size]
+    X = X[:size]
     y = y[:size]
 
     # Split data into training and testing sets
