@@ -104,7 +104,7 @@ def display_form2():
 
     form2.write("""The MNIST Fashion classification task is an image 
         classification problem where the goal is to automatically categorize 
-        images of different clothing items. .""")
+        images of different clothing items.""")
     text = """1. K-Nearest Neighbors (KNN):
         \nConcept: KNN classifies an image by comparing it to its k nearest neighbors in the 
         training data. The class label of the majority of these neighbors becomes the predicted 
