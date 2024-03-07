@@ -4,8 +4,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
 from sklearn import tree
-from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.naive_bayes import GaussianNB
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
@@ -83,8 +84,9 @@ def display_form2():
     st.session_state["current_form"] = 2
 
     form2 = st.form("training")
-    # Load MNIST dataset
-    mnist = fetch_openml('mnist_784', version=1, data_home=".", return_X_y=True)
+
+    # Download and load the Fashion MNIST dataset
+    X, y = fetch_openml('fashion-mnist-784', version=1, return_X_y=True)
 
     # Extract only the specified number of images and labels
     size = 10000
@@ -101,30 +103,39 @@ def display_form2():
     st.session_state['y_train'] = y_train
     st.session_state['y_test'] = y_test
 
-    form2.text('The task: Classify handwritten digits from 0 to 9 based on a given image.')
-    text = """Dataset: MNIST - 70,000 images of handwritten digits (28x28 pixels), each labeled 
-    with its corresponding digit (0-9).
-    \nModels:
-    \nK-Nearest Neighbors (KNN):
-    \nEach image is represented as a 784-dimensional vector (28x28 pixels). 
-    To classify a new image, its distance is measured to K nearest neighbors in the 
-    training data. The majority class label among the neighbors is assigned to the new image.
-    \nDecision Tree:
-    \nA tree-like structure is built based on features (pixel intensities) of the images. 
-    \nThe tree splits the data based on decision rules (e.g., "pixel intensity at 
-    position X is greater than Y"). The new image is navigated through the tree based on 
-    its features, reaching a leaf node representing the predicted digit class.
-    \nRandom Forest:
-    \nAn ensemble of multiple decision trees are built, each trained on a random subset of 
-    features (pixels) and a random subset of data.
-    \nTo classify a new image, it is passed through each decision tree, and the majority class 
-    label from all predictions is assigned."""
+    form2.write("""The MNIST Fashion classification task is an image 
+        classification problem where the goal is to automatically categorize 
+        images of different clothing items. .""")
+    text = """1. K-Nearest Neighbors (KNN):
+        \nConcept: KNN classifies an image by comparing it to its k nearest neighbors in the 
+        training data. The class label of the majority of these neighbors becomes the predicted 
+        label for the new image.
+        \nPerformance: KNN can achieve good accuracy on the Fashion-MNIST dataset, 
+        especially with careful selection of the "k" parameter (number of neighbors). 
+        However, it can be computationally expensive for large datasets like this one due to 
+        the need for distance calculations with all training data points during prediction.
+        \n2. Support Vector Machine (SVM):
+        \nConcept: SVM aims to find a hyperplane in the feature space that best 
+        separates the data points of different classes. It maximizes the margin between 
+        the hyperplane and the closest data points of each class (support vectors).
+        \nPerformance: SVMs generally perform well on the Fashion-MNIST dataset, 
+        offering good accuracy and handling high-dimensional data efficiently. However, 
+        tuning the hyperparameters of an SVM can be challenging, and it might not be as 
+        interpretable as other models like KNN.
+        \n3. Naive Bayes: 
+        \nConcept: Naive Bayes assumes independence between features and uses Bayes' 
+        theorem to calculate the probability of an image belonging to each class 
+        based on its individual pixel values.
+        \nPerformance: Naive Bayes can be a fast and efficient classifier for the 
+        Fashion-MNIST dataset. However, its assumption of feature independence can be a 
+        limitation, leading to potential inaccuracies when features are not truly 
+        independent, as often seen in image data."""
     form2.write(text)
 
     X_train = st.session_state['X_train']
     X_test = st.session_state['X_test']
 
-    form2.subheader('First 25 images in the MNIST dataset') 
+    form2.subheader('First 25 images in the MNIST fashion dataset') 
 
     # Get the first 25 images and reshape them to 28x28 pixels
     train_images = np.array(X_train)
@@ -134,7 +145,7 @@ def display_form2():
     fig, axes = plt.subplots(5, 5, figsize=(10, 10))
     # Plot each image on a separate subplot
     for i, ax in enumerate(axes.ravel()):
-        ax.imshow(images[i], cmap=plt.cm.binary)
+        ax.imshow(images[i], cmap='gray')
         ax.set_xticks([])
         ax.set_yticks([])
         ax.set_title(f"Digit: {train_labels[i]}")
@@ -146,20 +157,17 @@ def display_form2():
 
     # Create the selecton of classifier
 
-    clf = tree.DecisionTreeClassifier()
-    options = ['Decision Tree', 'Random Forest Classifier', 'Extreme Random Forest Classifier', 'K Nearest Neighbor']
+    clf = KNeighborsClassifier(n_neighbors=5)
+    options = ['K Nearest Neighbor', 'Support Vector Machine', 'Naive Bayes']
     selected_option = form2.selectbox('Select the classifier', options)
-    if selected_option =='Random Forest Classifier':
-        clf = RandomForestClassifier(n_jobs=2, random_state=0)
+    if selected_option =='Support Vector Machine':
+        clf = SVC(kernel='rbf')
         st.session_state['selected_model'] = 1
-    elif selected_option=='Extreme Random Forest Classifier':        
-        clf = ExtraTreesClassifier(n_estimators=100, max_depth=4, random_state=0)
+    elif selected_option=='Naive Bayes':        
+        clf = GaussianNB()
         st.session_state['selected_model'] = 2
-    elif selected_option == 'K Nearest Neighbor':
-        clf = KNeighborsClassifier(n_neighbors=5)
-        st.session_state['selected_model'] = 3
     else:
-        clf = tree.DecisionTreeClassifier()
+        clf = KNeighborsClassifier(n_neighbors=5)
         st.session_state['selected_model'] = 0
 
     # save the clf to the session variable
@@ -173,39 +181,26 @@ def display_form3():
     st.session_state["current_form"] = 3
     form3 = st.form("Result")
     classifier = ''
-    if st.session_state['selected_model'] == 0:     # decision tree
-        text = """Achieves good accuracy, but can be prone to 
-        overfitting, leading to lower performance on unseen data.
-        Simple and interpretable, allowing visualization of decision rules.
-        Susceptible to changes in the training data, potentially 
-        leading to high variance in predictions."""
-        classifier = 'Decision Tree'
-    elif st.session_state['selected_model'] == 1:   # Random Forest
-        text = """Generally outperforms a single decision tree, 
-        reaching accuracy close to 98%. Reduces overfitting through 
-        averaging predictions from multiple trees. Ensemble method - 
-        combines predictions from multiple decision trees, leading to 
-        improved generalization and reduced variance. Less interpretable 
-        compared to a single decision tree due to the complex 
-        ensemble structure."""
-        classifier = 'Random Forest'
-    elif st.session_state['selected_model'] == 2:   # Extreme Random Forest
-        text = """Performance: Can achieve similar or slightly better 
-        accuracy compared to a random forest, but results can vary 
-        depending on hyperparameter tuning. Introduces additional randomness 
-        during tree building by randomly selecting features at each split.  Aims to 
-        further improve generalization and reduce overfitting by increasing 
-        the diversity of trees in the ensemble. Requires careful 
-        hyperparameter tuning to achieve optimal performance."""
-        classifier = "Extreme Random Forest"
-    else:
-        text = """Accuracy: While KNN can achieve reasonable accuracy (around 80-90%), 
-        it's often outperformed by more sophisticated models like Support 
-        Vector Machines (SVMs) or Convolutional Neural Networks (CNNs) which can 
-        reach over 97% accuracy.\nComputational cost: Classifying new data points 
-        requires comparing them to all data points in the training set, making 
-        it computationally expensive for large datasets like MNIST."""
-        classifier = "K-Nearest Neighbor"
+    if st.session_state['selected_model'] == 0:     # KNN
+        text = """KNN achieves good accuracy on the Fashion MNIST dataset, often 
+        reaching around 85-90%. However, it can be slow for large datasets 
+        due to needing to compare each test image to all training images. 
+        Additionally, choosing the optimal number of neighbors (k) can be 
+        crucial for performance."""
+        classifier = 'K-Nearest Neighbor'
+    elif st.session_state['selected_model'] == 1:   # SVM
+        text = """SVM can also achieve high accuracy on this dataset, 
+        similar to KNN. It offers advantages like being memory-efficient, 
+        but choosing the right kernel function and its parameters 
+        can be challenging."""
+        classifier = 'Support Vector Machine'
+    else:   #Naive Bayes
+        text = """Naive Bayes is generally faster than the other two options but 
+        may achieve slightly lower accuracy, typically around 80-85%. It performs 
+        well when the features are independent, which might not perfectly hold true 
+        for image data like the Fashion MNIST."""
+        classifier = "Naive Bayes"
+    
 
     form3.subheader('Performance of the ' + classifier)
 
