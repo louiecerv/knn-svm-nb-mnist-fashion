@@ -160,7 +160,7 @@ def display_form2():
     options = ['K Nearest Neighbor', 'Support Vector Machine', 'Naive Bayes']
     selected_option = form2.selectbox('Select the classifier', options)
     if selected_option =='Support Vector Machine':
-        clf = SVC(kernel='rbf')
+        clf = SVC(kernel='linear')
         st.session_state['selected_model'] = 1
     elif selected_option=='Naive Bayes':        
         clf = GaussianNB()
