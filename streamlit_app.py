@@ -147,7 +147,7 @@ def display_form2():
         ax.imshow(images[i], cmap='gray')
         ax.set_xticks([])
         ax.set_yticks([])
-        ax.set_title(f"Digit: {train_labels[i]}")
+        ax.set_title(f"Class: {train_labels[i]}")
     # Show the plot
     plt.tight_layout()
     form2.pyplot(fig)
