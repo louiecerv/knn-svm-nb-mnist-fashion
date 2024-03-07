@@ -86,7 +86,8 @@ def display_form2():
     form2 = st.form("training")
 
     # Download and load the Fashion MNIST dataset
-    X, y = fetch_openml('fashion-mnist-784', version=1, return_X_y=True)
+    X, y = fetch_openml('Fashion-MNIST', version=1, return_X_y=True)
+    
 
     # Extract only the specified number of images and labels
     size = 10000
