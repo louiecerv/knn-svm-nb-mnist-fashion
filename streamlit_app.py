@@ -88,11 +88,9 @@ def display_form2():
     # Download and load the Fashion MNIST dataset
     X, y = fetch_openml('Fashion-MNIST', version=1, return_X_y=True)
     
-
     # Extract only the specified number of images and labels
     size = 10000
-    X, y = mnist
-    X = X[:size]
+        X = X[:size]
     y = y[:size]
 
     # Split data into training and testing sets
